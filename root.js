@@ -14,7 +14,7 @@ class Root{
         this.childCount=0;
         ///immutable
         this.angle=angle
-        this.maxLength=5
+        this.maxLength=20
         //color
         this.alpha=alpha
         this.red=red
@@ -41,7 +41,8 @@ class Root{
         drawRoot(){
             //Draw a line from root's starting point to its final point
             this.createRootVector();
-            stroke(this.red,this.green,this.blue,this.alpha)
+            //stroke(this.red,this.green,this.blue,this.alpha)
+            stroke(this.red)
             strokeWeight(this.thickness)
             line(this.startX,this.startY,this.nextX,this.nextY)
         }
@@ -68,29 +69,28 @@ class Root{
             if(this.isBranch && !this.isBranchDone && this.childCount<this.maxChildCount){
                     this.isBranch=false
                     this.isBranchDone=true
-
                     additionalBranches.push(new Root(
                         this.finalX, //Start X
                         this.finalY, //Start Y
-                        random(360), //Angle
-                        this.alpha, //Alpha
-                        this.red, //Red
-                        this.green, //Green
-                        this.blue, //Blue
-                        noise(this.finalX,this.finalY)*5 //Max Branch
+                        this.angle+random(100)*random(-1,1), //Angle
+                        noise(this.finalX,this.finalY)*100, //Alpha
+                        (this.red+noise(this.finalX,this.finalY)*100)%255, //Red
+                        (this.green+noise(this.finalX,this.finalY)*100)%255, //Green
+                        (this.blue+noise(this.finalX,this.finalY)*100)%255, //Blue
+                        this.maxChildCount //Max Branch
                         ))
                     if(this.maxChildCount!=0){
-                        this.maxChildCount--
+                        //this.maxChildCount--
                     }
                     for(let i=0; i<this.maxChildCount;i++){
                        additionalBranches.push(new Root(
                            this.finalX,//Start X
                            this.finalY,//Start Y
-                           random(360),//Angle
-                           this.alpha-70, // Alpha
-                           200, //Red
-                           200, //Green
-                           200, //Blue
+                           this.angle+random(100)*random(-1,1),//Angle
+                           noise(this.finalX,this.finalY)*100, // Alpha
+                           (this.red+noise(this.finalX,this.finalY)*100)%255, //Red
+                           (this.green+noise(this.finalX,this.finalY)*100)%255, //Green
+                           (this.blue+noise(this.finalX,this.finalY)*100)%255, //Blue
                            this.maxChildCount //Max Branch
                            ))
                         this.childCount++
