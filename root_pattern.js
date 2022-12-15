@@ -6,35 +6,59 @@ let height=900;
 let width=900;
 //let angle =90;
 let isDraw=true;
-let seedCount=2;
+let seedCount=100;
+let isLoop=false
 
 
 
 function setup (){
   createCanvas (height, width);
-  background(30);
+  background(250);
   plantSeeds();
+  //plantSeedsHorizontally(height*1.1)
 }
 
 function draw(){
- // background(30);
+  if(isLoop){
+  //background(30);
   growRoots()
   generateNewRoot()
   //removeFromBegining()
+  }
 }
 
 function mousePressed() {
-  noLoop();
+ isLoop=true
 }
 
 function plantSeeds(){
   let count=360/seedCount
   for (angle=0;angle<360;angle=angle+count){
-  startRoot(angle)
+    startRootFromCenter(angle)
 	}
 }
 
-function startRoot(angleValue){
+function plantSeedsHorizontally(height){
+  for(let x=0;x<width;x+=width/seedCount){
+    print("hey")
+    startRootFromCustomPosition(random(-100,-80),x,height)
+  }
+}
+function startRootFromCustomPosition(angleValue,x,y){
+  root= new Root(
+    x, //Start X
+    y, //Start Y
+    angleValue, //Angle
+    255, //Alpha
+    253, //Red
+    60, //Green
+    75, //Blue
+    1 //Max Branch
+    )
+  roots.push(root)
+}
+
+function startRootFromCenter(angleValue){
   root= new Root(
     width/2, //Start X
     height/2, //Start Y
@@ -44,9 +68,12 @@ function startRoot(angleValue){
     60, //Green
     75, //Blue
     1 //Max Branch
-    );
+  )
   roots.push(root)
 }
+
+
+
 
 function generateNewRoot(){
   var size =roots.length

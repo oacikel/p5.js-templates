@@ -14,7 +14,7 @@ class Root{
         this.childCount=0;
         ///immutable
         this.angle=angle
-        this.maxLength=20
+        this.maxLength=100
         //color
         this.alpha=alpha
         this.red=red
@@ -27,6 +27,7 @@ class Root{
         this.isBranch=false;
         this.isBranchDone=false
         this.maxChildCount=maxChildCount
+        this.noiseScale=2
     }
     
         createRootVector(){  
@@ -41,10 +42,19 @@ class Root{
         drawRoot(){
             //Draw a line from root's starting point to its final point
             this.createRootVector();
-            //stroke(this.red,this.green,this.blue,this.alpha)
+            stroke(this.red,this.green,this.blue,this.alpha)
             stroke(this.red)
             strokeWeight(this.thickness)
-            line(this.startX,this.startY,this.nextX,this.nextY)
+            noFill()
+            //line(this.startX,this.startY,this.nextX,this.nextY)
+            bezier(this.startX,this.startY,
+                this.startX+noise(this.startX,this.startY)*this.noiseScale*random(-1,1),
+                this.startY+noise(this.startX,this.startY)*this.noiseScale*random(-1,1),
+                this.finalX+noise(this.finalX,this.finalY)*this.noiseScale*random(-1,1),
+                this.finalY+noise(this.finalX,this.finalY)*this.noiseScale*random(-1,1),
+                this.finalX,
+                this.finalY
+                )
         }
 
        growRoot(){    
@@ -54,7 +64,7 @@ class Root{
            // assign currentt final points
             if(this.dimennsion<this.maxLength && !this.isBranch){
                 this.dimennsion+=this.growthRate
-                this.nextX=this.nextX+(this.growthRate*cos(radians(this.angle)))
+                this.nextX=this.nextX+(this.growthRate*cos(radians(this.angle)))*random(1)
                 this.nextY=this.nextY+(this.growthRate*sin(radians(this.angle)))
                 this.finalX=this.nextX
                 this.finalY=this.nextY
@@ -65,6 +75,7 @@ class Root{
         }
 
         generateRootFromFinalPoint(){
+            
             let additionalBranches=[];
             if(this.isBranch && !this.isBranchDone && this.childCount<this.maxChildCount){
                     this.isBranch=false
@@ -73,15 +84,17 @@ class Root{
                         this.finalX, //Start X
                         this.finalY, //Start Y
                         this.angle+random(100)*random(-1,1), //Angle
-                        noise(this.finalX,this.finalY)*100, //Alpha
-                        (this.red+noise(this.finalX,this.finalY)*100)%255, //Red
+                        noise(this.finalX,this.finalY)*100, // Alpha
+                        (this.red-noise(this.finalX,this.finalY)*5)%255-50, //Red
                         (this.green+noise(this.finalX,this.finalY)*100)%255, //Green
                         (this.blue+noise(this.finalX,this.finalY)*100)%255, //Blue
                         this.maxChildCount //Max Branch
                         ))
+                        
                     if(this.maxChildCount!=0){
                         //this.maxChildCount--
                     }
+                    /*
                     for(let i=0; i<this.maxChildCount;i++){
                        additionalBranches.push(new Root(
                            this.finalX,//Start X
@@ -95,6 +108,8 @@ class Root{
                            ))
                         this.childCount++
                     }
+                    */
+                    
                     return additionalBranches
             }
         
