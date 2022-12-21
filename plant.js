@@ -51,6 +51,7 @@ class Plant{
                 line(this.startX,this.startY,this.nextX,this.nextY)
             }
                 this.isAlreadyDrawn=(this.dimension==this.maxLength || this.alpha<0.1) 
+            
         }
 
        growRoot(){    
@@ -66,6 +67,8 @@ class Plant{
                 this.finalY=this.nextY
             }else {
                 //If limit is reached the root is ready to branch out. Growth stops.
+                print("Branch is done")
+                this.isAlreadyDrawn=true
                 this.isBranch=true
             }
             //this.thickness+=0.01
