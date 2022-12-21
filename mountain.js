@@ -3,34 +3,36 @@ class Mountain{
     {
     
     }   
-    drawMountain(totalWidth,totalHeight,startX,endX,bottomY,topY,steepness){
+    drawMountain(startX,endX,bottomY,topY,steepness){
         let y
         let inc=steepness
         let start=0
         let angle
-        let height=abs(bottomY-topY)
-        let width =abs(startX-endX)
         let up= bottomY < topY ? bottomY : topY
         let down = bottomY < topY ? topY : bottomY
+        let factor=1
         stroke(255,0,0)
+
+        let xArray=[]
+        let yArray=[]
+        let deepestPoint=down
 
         noFill()
         beginShape()
         for(var x=startX;x<=endX;x+=1){
             angle=map(x,startX,endX,0,PI)
-            //print(noise(x))
             let warpValue=sin(angle)
-            print("warp: "+nfc(warpValue,1))
-            y=map(noise(start),0,1,down,up)*warpValue
-            //y=noise(start)*warpValue
-            //y=map(x,startX,endX,down,up)*warpValue
-            print("y value: "+nfc(y,1))
-            print("x value: "+nfc(x,1))
-
+            y=map(noise(start)*warpValue,0,1*factor,down,up)
+            if(y<deepestPoint){
+                deepestPoint=y
+            }
             start+=inc
-            strokeWeight(3)
-            vertex(x,-y+bottomY)
-           
+            xArray.push(x)
+            yArray.push(y)
+        }
+        for(let i=0;i<yArray.length;i++){
+            yArray[i]=map(yArray[i],down,deepestPoint,down,up)
+            vertex(xArray[i],yArray[i])
         }
         endShape()
         noLoop()

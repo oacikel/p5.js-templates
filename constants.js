@@ -19,5 +19,5 @@ static sprialSpeed = 0.1
 static spiralScalar=2
 
 //Global Variables For Mountain Generation
-static steepness = 0.006
+static steepness = 0.01
 }

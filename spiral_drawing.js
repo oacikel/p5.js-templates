@@ -2,11 +2,11 @@ let height=600
 let width=600
 
 let mountain;
-let shift=0
 
 let mountainStartX=0
+let mountainStartY=height-100
+
 let mountainEndX=width
-let mountainStartY=height/2
 let mountainEndY=0+100
 
 function setup (){
@@ -18,12 +18,16 @@ mountain = new Mountain()
 }
 
 function draw(){
-    logAxises()
-    mountain.drawMountain(width,height,mountainStartX,width,mountainStartY,mountainEndY,Constants.steepness)
-}
+        logAxises()
+        mountain.drawMountain(mountainStartX,mountainEndX,mountainStartY,mountainEndY,Constants.steepness)
+    }
+    
 
 function mousePressed() {
+    loop()
+}
 
+function mouseMoved(){
 }
 
 function doubleClicked(){
