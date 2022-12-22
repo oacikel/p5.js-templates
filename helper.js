@@ -26,4 +26,9 @@ class Helper{
     static getTrueOnPercentage(percentage){
         return  Math.random()*100 < percentage ? true : false
     }
+
+    static getGradientColorWithinBound(lowBoundary,highBoundary, currentIndex, fromColor, toColor) {
+        let inter=map(currentIndex,lowBoundary,highBoundary,0,1)
+        return lerpColor(fromColor, toColor,inter)
+      }
 }

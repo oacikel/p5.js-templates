@@ -1,25 +1,41 @@
-let height=600
-let width=600
+var height;
+var width;
 
 let mountain;
 
-let mountainStartX=0
-let mountainStartY=height-100
+let mountainStartX
+let mountainTopY
+let mountainEndX
+let mountainBottomY
 
-let mountainEndX=width
-let mountainEndY=0+100
+let colorIndex=0
+
+let mountainFromColor;
+let mountainToColor;
 
 function setup (){
-
+height=windowHeight
+width=windowWidth
+mountainStartX=100
+mountainEndX=width-100
+mountainBottomY=height-100
+mountainTopY=100
 createCanvas (width, height);
 background(3);
-mountain = new Mountain()
+colorMountainA = color(17,45,83)
+colorMountainB = color(20,64,97)
+mountainA = new Mountain(mountainStartX,mountainEndX,mountainBottomY,mountainTopY,Constants.steepness,colorMountainA,colorMountainB)
 
 }
 
 function draw(){
+        height=windowHeight
+        width=windowWidth
         logAxises()
-        mountain.drawMountain(mountainStartX,mountainEndX,mountainStartY,mountainEndY,Constants.steepness)
+        //stroke(Helper.getGradientColorWithinBound(0,height,colorIndex,mountainFromColor,mountainToColor))
+        mountainA.drawMountain()
+        //colorIndex++
+        mountainBottomY++
     }
     
 
@@ -35,16 +51,16 @@ function doubleClicked(){
 }
 
 function logAxises(){
-    let s = 'Start Axis (y='+mountainStartY+")";
+    let s = 'Start Axis (y='+mountainBottomY+")";
     fill(250);
-    text(s, 10, mountainStartY);
+    text(s, 10, mountainBottomY);
     stroke(0,255,0)
-    line(mountainStartX,mountainStartY,mountainEndX,mountainStartY)
+    line(mountainStartX,mountainBottomY,mountainEndX,mountainBottomY)
     stroke(0,0,355)
-    line(mountainStartX,mountainEndY,mountainEndX,mountainEndY)
-    let p = 'End Axis (y='+mountainEndY+")";
+    line(mountainStartX,mountainTopY,mountainEndX,mountainTopY)
+    let p = 'End Axis (y='+mountainTopY+")";
     fill(250);
-    text(p, 10, mountainEndY);
+    text(p, 10, mountainTopY);
 }
 
 

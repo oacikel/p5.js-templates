@@ -1,40 +1,48 @@
 class Mountain{
-    constructor()
+    constructor(startX,endX,bottomY,topY,steepness,topColor,bottomColor)
     {
-    
+    this.startX=startX
+    this.endX=endX
+    this.bottomY=bottomY
+    this.topY=topY
+    this.steepness=steepness
+    this.topColor=topColor
+    this.bottomColor=bottomColor
+
+    this.start = 0
+    this.angle
+    this.xArray=[]
+    this.yArray=[]
+    this.deepestPoint=this.topY
+    this.warpValue
+    this.yPoint
     }   
-    drawMountain(startX,endX,bottomY,topY,steepness){
-        let y
-        let inc=steepness
-        let start=0
-        let angle
-        let up= bottomY < topY ? bottomY : topY
-        let down = bottomY < topY ? topY : bottomY
-        let factor=1
-        stroke(255,0,0)
-
-        let xArray=[]
-        let yArray=[]
-        let deepestPoint=down
-
+    drawMountain(){
+        strokeWeight(3)
+        stroke(255)
         noFill()
+        
         beginShape()
-        for(var x=startX;x<=endX;x+=1){
-            angle=map(x,startX,endX,0,PI)
-            let warpValue=sin(angle)
-            y=map(noise(start)*warpValue,0,1*factor,down,up)
-            if(y<deepestPoint){
-                deepestPoint=y
+        for(var x=this.startX;x<=this.endX;x+=1){
+            this.angle=map(x,this.startX,this.endX,0,PI)
+            this.warpValue=sin(this.angle)
+            this.yPoint=map(noise(this.start)*this.warpValue,0,1,this.topY,this.bottomY)
+            print("y is "+nfc(this.yPoint,0))
+            if(this.yPoint>this.deepestPoint){
+                this.deepestPoint=this.yPoint
             }
-            start+=inc
-            xArray.push(x)
-            yArray.push(y)
+            this.start+=this.steepness
+            this.xArray.push(x)
+            this.yArray.push(this.yPoint)
         }
-        for(let i=0;i<yArray.length;i++){
-            yArray[i]=map(yArray[i],down,deepestPoint,down,up)
-            vertex(xArray[i],yArray[i])
+        for(let i=0;i<this.yArray.length;i++){
+            //print("top: "+this.topY)
+            //print("bottom: "+this.bottomY)
+            this.yArray[i]=map(this.yArray[i],this.topY,this.deepestPoint,this.bottomY,this.topY)
+            vertex(this.xArray[i],this.yArray[i])
         }
         endShape()
         noLoop()
+
     }
 }
