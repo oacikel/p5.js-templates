@@ -29,18 +29,19 @@ mountainA = new Mountain(mountainStartX,mountainEndX,mountainBottomY,mountainTop
 }
 
 function draw(){
+    background(30)
         height=windowHeight
         width=windowWidth
         logAxises()
         //stroke(Helper.getGradientColorWithinBound(0,height,colorIndex,mountainFromColor,mountainToColor))
         mountainA.drawMountain()
         //colorIndex++
-        mountainBottomY++
+        //mountainBottomY++
     }
     
 
 function mousePressed() {
-    loop()
+    mountainA.drawMountain()
 }
 
 function mouseMoved(){
@@ -51,14 +52,14 @@ function doubleClicked(){
 }
 
 function logAxises(){
-    let s = 'Start Axis (y='+mountainBottomY+")";
+    let s = 'Bottom (y='+mountainBottomY+")";
     fill(250);
     text(s, 10, mountainBottomY);
     stroke(0,255,0)
     line(mountainStartX,mountainBottomY,mountainEndX,mountainBottomY)
     stroke(0,0,355)
     line(mountainStartX,mountainTopY,mountainEndX,mountainTopY)
-    let p = 'End Axis (y='+mountainTopY+")";
+    let p = 'Top (y='+mountainTopY+")";
     fill(250);
     text(p, 10, mountainTopY);
 }

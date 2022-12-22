@@ -8,16 +8,16 @@ class Mountain{
     this.steepness=steepness
     this.topColor=topColor
     this.bottomColor=bottomColor
-
     this.start = 0
-    this.angle
-    this.xArray=[]
-    this.yArray=[]
-    this.deepestPoint=this.topY
-    this.warpValue
-    this.yPoint
     }   
     drawMountain(){
+        
+        this.angle
+        this.xArray=[]
+        this.yArray=[]
+        this.warpValue
+        this.yPoint
+        this.deepestPoint=this.topY
         strokeWeight(3)
         stroke(255)
         noFill()
@@ -27,7 +27,6 @@ class Mountain{
             this.angle=map(x,this.startX,this.endX,0,PI)
             this.warpValue=sin(this.angle)
             this.yPoint=map(noise(this.start)*this.warpValue,0,1,this.topY,this.bottomY)
-            print("y is "+nfc(this.yPoint,0))
             if(this.yPoint>this.deepestPoint){
                 this.deepestPoint=this.yPoint
             }
@@ -42,7 +41,8 @@ class Mountain{
             vertex(this.xArray[i],this.yArray[i])
         }
         endShape()
-        noLoop()
-
+        print("incresing top y")
+        this.topY+=1
+        //noLoop()
     }
 }
