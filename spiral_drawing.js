@@ -24,12 +24,13 @@ createCanvas (width, height);
 background(3);
 colorMountainA = color(17,45,83)
 colorMountainB = color(20,64,97)
+//colorMountainB = color(255,255,255)
 mountainA = new Mountain(mountainStartX,mountainEndX,mountainBottomY,mountainTopY,Constants.steepness,colorMountainA,colorMountainB)
 
 }
 
 function draw(){
-    background(30)
+    //background(30)
         height=windowHeight
         width=windowWidth
         logAxises()
