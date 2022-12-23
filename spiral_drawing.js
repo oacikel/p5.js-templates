@@ -16,26 +16,49 @@ let mountainToColor;
 function setup (){
 height=windowHeight
 width=windowWidth
-mountainStartX=100
-mountainEndX=width-100
-mountainBottomY=height-100
-mountainTopY=100
+
+mountainStartX=-1000
+mountainEndX=width/2
+
+mountainTopY=200
+mountainBottomY=400
+
+mountainBStartX=0
+mountainBEndX=width
+
+mountainBTopY=300
+mountainBBottomY=500
+
+mountainCStartX=width/2+40
+mountainCEndX=width
+
+mountainCTopY=250
+mountainCBottomY=300
+
+
 createCanvas (width, height);
-background(3);
-colorMountainA = color(17,45,83)
-colorMountainB = color(20,64,97)
+background(240,232,205);
+colorMountainA = color(248,245,237)
+colorMountainB = color(122,154,184)
 //colorMountainB = color(255,255,255)
 mountainA = new Mountain(mountainStartX,mountainEndX,mountainBottomY,mountainTopY,Constants.steepness,colorMountainA,colorMountainB)
+mountainB = new Mountain(mountainBStartX,mountainBEndX,mountainBBottomY,mountainBTopY,Constants.steepness,colorMountainA,colorMountainB)
+mountainC = new Mountain(mountainCStartX,mountainCEndX,mountainCBottomY,mountainCTopY,Constants.steepness,colorMountainA,colorMountainB)
+
+
 
 }
 
 function draw(){
-    //background(30)
-        height=windowHeight
+    background(45,119,205);
+    height=windowHeight
         width=windowWidth
-        logAxises()
+        //logAxises()
         //stroke(Helper.getGradientColorWithinBound(0,height,colorIndex,mountainFromColor,mountainToColor))
         mountainA.drawMountain()
+        mountainB.drawMountain()
+        mountainC.drawMountain()
+        
         //colorIndex++
         //mountainBottomY++
     }

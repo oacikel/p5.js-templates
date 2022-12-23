@@ -28,7 +28,8 @@ class Helper{
     }
 
     static getGradientColorWithinBound(lowBoundary,highBoundary, currentIndex, fromColor, toColor) {
-        let inter=map(currentIndex,lowBoundary,highBoundary,0,1)
+        let inter=map(currentIndex,lowBoundary,highBoundary,0,1)*(-1)
+        print("Ratio is "+inter)
         return lerpColor(fromColor, toColor,inter)
       }
 }

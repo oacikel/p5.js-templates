@@ -8,30 +8,43 @@ class Mountain{
     this.steepness=steepness
     this.topColor=topColor
     this.bottomColor=bottomColor
-    this.topMostPoint=topY
     this.peak=topY
+    this.currentPeak=this.topY+1
+    this.start = 0
     }   
     drawMountain(){
-        if((this.topMostPoint<=this.bottomY)){
-            this.start = 0
+
+        //Adjusting gradient
+        let g = drawingContext.createLinearGradient(this.startX,this.topY, this.startX,this.bottomY);
+        g.addColorStop(0,   this.topColor.toString());
+        g.addColorStop(0.5,   this.topColor.toString());
+        g.addColorStop(1,   this.bottomColor.toString());
+  
+  // then draw a shape with this gradient
+ 
+       
+       
+        if((this.currentPeak>=this.topY)|| true){
+           
             this.angle
             this.xArray=[]
             this.yArray=[]
             this.warpValue
             this.yPoint
-            this.deepestPoint=this.topY
-            this.topMostPoint=this.topY
+            this.deepestPoint=this.currentPeak
+            print("Finding a color for index "+this.currentPeak+". To be between "+this.topY+" and "+this.bottomY)
 
-            stroke(Helper.getGradientColorWithinBound(this.peak,this.bottomY,this.topY,this.topColor,this.bottomColor))
-            strokeWeight(2)
-            //stroke(255)
-            noFill()
+            noStroke()
+            strokeWeight(3)
+            //noFill()
+            drawingContext.fillStyle = g;
             
             beginShape()
             for(var x=this.startX;x<=this.endX;x+=1){
                 this.angle=map(x,this.startX,this.endX,0,PI)
                 this.warpValue=sin(this.angle)
-                this.yPoint=map(noise(this.start)*this.warpValue,0,1,this.topY,this.bottomY)
+                this.yPoint=map(noise(this.start)*this.warpValue,0,1,this.currentPeak,this.bottomY)
+                
                 if(this.yPoint>this.deepestPoint){
                     this.deepestPoint=this.yPoint
                 }
@@ -39,16 +52,14 @@ class Mountain{
                 this.xArray.push(x)
                 this.yArray.push(this.yPoint)
             }
-            for(let i=0;i<this.yArray.length;i++){
-                //print("top: "+this.topY)
-                //print("bottom: "+this.bottomY)
-                this.yArray[i]=map(this.yArray[i],this.topY,this.deepestPoint,this.bottomY,this.topY)
+            for(let i=0;i<this.yArray.length;i++){            
+                this.yArray[i]=map(this.yArray[i],this.currentPeak,this.deepestPoint,this.bottomY,this.currentPeak)
                 vertex(this.xArray[i],this.yArray[i])
             }
             endShape()
-            print("incresing top y")
-            this.topY+=1
             //noLoop()
+            this.start=this.start-(this.endX-this.startX)*this.steepness+0.0001
+           // this.currentPeak-=1
         }
     }
 }
