@@ -1,94 +1,104 @@
 var height;
 var width;
-
-let mountain;
-
-let mountainStartX
-let mountainTopY
-let mountainEndX
-let mountainBottomY
-
-let colorIndex=0
-
-let mountainFromColor;
-let mountainToColor;
+let mountains=[]
+let baseColor
+let secondColor
 
 function setup (){
 height=windowHeight
 width=windowWidth
-
-mountainStartX=-1000
-mountainEndX=width/2
-
-mountainTopY=200
-mountainBottomY=400
-
-mountainBStartX=0
-mountainBEndX=width
-
-mountainBTopY=300
-mountainBBottomY=500
-
-mountainCStartX=width/2+40
-mountainCEndX=width
-
-mountainCTopY=250
-mountainCBottomY=300
-
-
 createCanvas (width, height);
-background(240,232,205);
-colorMountainA = color(248,245,237)
-colorMountainB = color(122,154,184)
-//colorMountainB = color(255,255,255)
-mountainA = new Mountain(mountainStartX,mountainEndX,mountainBottomY,mountainTopY,Constants.steepness,colorMountainA,colorMountainB)
-mountainB = new Mountain(mountainBStartX,mountainBEndX,mountainBBottomY,mountainBTopY,Constants.steepness,colorMountainA,colorMountainB)
-mountainC = new Mountain(mountainCStartX,mountainCEndX,mountainCBottomY,mountainCTopY,Constants.steepness,colorMountainA,colorMountainB)
-
-
-
+prepareColors(190)
+prepareScene(1,height*0.8,height*0.5,baseColor)
 }
 
 function draw(){
-    background(45,119,205);
-    height=windowHeight
-        width=windowWidth
-        //logAxises()
-        //stroke(Helper.getGradientColorWithinBound(0,height,colorIndex,mountainFromColor,mountainToColor))
-        mountainA.drawMountain()
-        mountainB.drawMountain()
-        mountainC.drawMountain()
-        
-        //colorIndex++
-        //mountainBottomY++
-    }
+prepareBackground()
+drawScene()
+//noLoop()
+}
     
 
 function mousePressed() {
-    mountainA.drawMountain()
+    prepareColors(map(mouseX,0,width,0,255))
+    prepareBackground()
+    prepareScene(nfc(map(mouseY,0,height,3,15),0),height*0.8,height*0.5,baseColor)
+    drawScene()
+    //noLoop()
+
 }
 
 function mouseMoved(){
 }
 
 function doubleClicked(){
-    noLoop()
-}
-
-function logAxises(){
-    let s = 'Bottom (y='+mountainBottomY+")";
-    fill(250);
-    text(s, 10, mountainBottomY);
-    stroke(0,255,0)
-    line(mountainStartX,mountainBottomY,mountainEndX,mountainBottomY)
-    stroke(0,0,355)
-    line(mountainStartX,mountainTopY,mountainEndX,mountainTopY)
-    let p = 'Top (y='+mountainTopY+")";
-    fill(250);
-    text(p, 10, mountainTopY);
+    
 }
 
 
+function prepareScene(mountainCount,bottomValue,topValue,baseColor){
+
+    //Mountain array creation:
+    prepareMountains(mountainCount,bottomValue,topValue,baseColor)
+}
+
+function prepareMountains(mountainCount,bottomBoundary,topBoundary,baseColor){
+    mountains=[]
+    let height=bottomBoundary-topBoundary
+    let heightIncreaseValue=height/mountainCount
+
+    //We want lightness to increase by 64% as it goes farher away:
+    let brightnessIncreaseValue = brightness(baseColor)*150/(mountainCount*255)
+    let saturationDecreaseValue = saturation(baseColor)*90/(mountainCount*255)
+    let baseSaturation=saturation(baseColor)
+    let baseSteepness=Constants.steepness
+    let angleIncrement=(PI/2)/mountainCount
+    let xShift=1000
+    let xSihftIncrement=xShift/mountainCount
+    let angle=0
+    for(let i=0;i<mountainCount;i++){
+        let baseBrightness=(brightness(baseColor)+(i*brightnessIncreaseValue))
+        baseSaturation=baseSaturation-(i*saturationDecreaseValue)
+       // print(baseBrightness)
+        let baseHue=(hue(baseColor))
+        let randomFactor=random(-1,1)*0
+        let bColor = color(baseHue,baseSaturation,baseBrightness)
+        let startX=(-xShift)+xSihftIncrement*i
+        print(startX)
+        let endX = (width+xShift)-xSihftIncrement*i
+        let bottomY=bottomBoundary-(heightIncreaseValue*(i-sin(angle)))
+        let topY=bottomBoundary-(heightIncreaseValue*(i+1))-(heightIncreaseValue*(1+cos(angle)))
+
+        var m = new Mountain(startX,endX,bottomY+(heightIncreaseValue),topY-(heightIncreaseValue*randomFactor),bColor,baseSteepness)
+        mountains.push(m)
+        baseSteepness=baseSteepness*0.9
+        angle+=angleIncrement
+
+    }
+}
+
+function drawScene(){
+    for(let i=mountains.length-1; i>=0 ;i--){
+        mountains[i].drawMountain()
+    }
+}
+
+function prepareBackground(){
+    let g = drawingContext.createLinearGradient(width/2,0, width/2,height)
+    g.addColorStop(0,secondColor)
+    g.addColorStop(1,baseColor.toString())
+    drawingContext.fillStyle = g;
+    rect(0,0,width,height)
+}
+
+function prepareColors(hueValue){
+    colorMode(HSB,255)
+    baseColor = color(hueValue,220,220)
+    baseHue=hue(baseColor)
+    baseSaturation=saturation(baseColor)
+    baseBrightness=brightness(baseColor)
+    secondColor=color(baseHue,baseSaturation*0.1,baseBrightness*10)
+}
 
 
 
